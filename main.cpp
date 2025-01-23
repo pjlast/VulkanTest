@@ -2,6 +2,8 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include <vector>
+#include <cstring>
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -58,7 +60,9 @@ std::vector<const char*> getRequiredExtensions() {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
 
-    extensions.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+    #ifdef __APPLE__
+        extensions.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+    #endif
 
     return extensions;
 }
@@ -149,7 +153,9 @@ private:
 
         auto extensions = getRequiredExtensions();
 
-        createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+        #ifdef __APPLE__
+            createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+        #endif
 
         createInfo.enabledExtensionCount = (uint32_t) extensions.size();
         createInfo.ppEnabledExtensionNames = extensions.data();
