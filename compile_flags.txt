@@ -1,6 +1,5 @@
--std=c++17
--I/usr/include
--L/usr/lib
+-I/opt/homebrew/include 
+-L/opt/homebrew/lib
 -lglfw
 -lglm
 -lvulkan
