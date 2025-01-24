@@ -8,13 +8,15 @@ CFLAGS = -std=c++17 -O2
 ifeq ($(UNAME_S),Darwin)
     # macOS configuration
     BREW_PREFIX := $(shell brew --prefix)
-    LDFLAGS = -I$(BREW_PREFIX)/include -L$(BREW_PREFIX)/lib -lglfw -lglm -lvulkan
+    VULKAN_SDK_PREFIX := /Users/pjlast/VulkanSDK/1.4.304.0/macOS
+    LDFLAGS = -I$(BREW_PREFIX)/include -L$(BREW_PREFIX)/lib -I$(VULKAN_SDK_PREFIX)/include -L$(VULKAN_SDK_PREFIX)/lib -lglfw -lglm -lvulkan
     
     # Vulkan SDK configuration for macOS
-    export VULKAN_SDK := $(BREW_PREFIX)/share/vulkan
+    export VULKAN_SDK := $(VULKAN_SDK_PREFIX)/share/vulkan
     export VK_ICD_FILENAMES := $(VULKAN_SDK)/icd.d/MoltenVK_icd.json
     export VK_LAYER_PATH := $(VULKAN_SDK)/explicit_layer.d
-    export DYLD_LIBRARY_PATH := $(BREW_PREFIX)/Cellar/vulkan-validationlayers/1.4.305/lib
+    export DYLD_LIBRARY_PATH := $(BREW_PREFIX)/Cellar/vulkan-validationlayers/1.4.305/lib:$(VULKAN_SDK_PREFIX)/lib
+    # export VK_LOADER_DEBUG=all
 else
     # Linux configuration
     LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
